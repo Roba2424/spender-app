@@ -3,7 +3,7 @@ import Register from "./pages/auth/register";
 import "./components/global/style.css";
 
 function App() {
-  return <Register />;
+  return <Login />;
 }
 
 export default App;

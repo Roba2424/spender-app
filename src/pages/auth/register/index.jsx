@@ -1,13 +1,28 @@
 import { Button, Flex, Form, Input } from "antd";
 import AuthWrapper from "../../../components/shared/AuthWrapper";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../service";
 
 const Register = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = (values) => {
-    console.log(values, "<<<<<REGISTER PAGE!");
+  const handleRegister = async (values) => {
+    setLoading(true);
+    const { firstName, lastName, email, password } = values;
+
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,7 +56,7 @@ const Register = () => {
               message: "Please enter your password",
             },
             {
-            //   pattern: regexpValidation,
+              //   pattern: regexpValidation,
               message: "Wrong password",
             },
           ]}
