@@ -3,16 +3,19 @@ import AuthWrapper from "../../../components/shared/AuthWrapper";
 import { useState } from "react";
 import { auth } from "../../../service/index";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { ROUTE_CONSTANTS } from "../../../utils/constants";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleLogin = async (values) => {
     setLoading(true);
     try {
       const { email, password } = values;
       await signInWithEmailAndPassword(auth, email, password);
+      navigate(ROUTE_CONSTANTS.CABINET);
     } catch (error) {
       notification.error({
         message: "Invalid Login Credentials",
@@ -50,7 +53,7 @@ const Login = () => {
           <Input.Password placeholder="password" />
         </Form.Item>
         <Flex justify="end" align="center">
-          {/* <Link to={ROUTE_CONSTANTS.REGISTER}>Create Account</Link> */}
+          <Link to={ROUTE_CONSTANTS.REGISTER}>Create Account</Link>
           <Button type="primary" htmlType="submit" loading={loading}>
             Sign in
           </Button>

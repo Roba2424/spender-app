@@ -1,0 +1,10 @@
+.user-profile-avatar {
+  cursor: pointer;
+}
+
+.main-loading-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

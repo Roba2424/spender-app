@@ -3,6 +3,8 @@ import AuthWrapper from "../../../components/shared/AuthWrapper";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../service";
+import { ROUTE_CONSTANTS } from "../../../utils/constants";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [form] = Form.useForm();
@@ -89,7 +91,7 @@ const Register = () => {
           <Input.Password placeholder="Password" />
         </Form.Item>
         <Flex justify="end" align="center">
-          {/* <Link to={ROUTE_CONSTANTS.LOGIN}>Sign in</Link> */}
+          <Link to={ROUTE_CONSTANTS.LOGIN}>Sign in</Link>
           <Button type="primary" htmlType="submit" loading={loading}>
             Register
           </Button>
