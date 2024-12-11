@@ -1,0 +1,21 @@
+.category-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 10px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.category-card:hover {
+  background-color: #f9f9f9;
+}
+
+.category-details {
+  margin: 20px;
+}
+
+.category-details button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
