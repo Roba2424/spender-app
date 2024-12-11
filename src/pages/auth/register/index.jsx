@@ -2,14 +2,18 @@ import { Button, Flex, Form, Input } from "antd";
 import AuthWrapper from "../../../components/shared/AuthWrapper";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../service";
-import { ROUTE_CONSTANTS } from "../../../utils/constants";
-import { Link } from "react-router-dom";
+import { auth, db } from "../../../service";
+import {
+  FIRESTORE_PATH_NAMES,
+  ROUTE_CONSTANTS,
+} from "../../../utils/constants";
+import { Link, useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleRegister = async (values) => {
     setLoading(true);
     const { firstName, lastName, email, password } = values;
@@ -20,6 +24,10 @@ const Register = () => {
         email,
         password
       );
+      const { uid } = response.user;
+      const createdDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
+      await setDoc(createdDoc, { uid, firstName, lastName, email });
+      navigate(ROUTE_CONSTANTS.LOGIN);
     } catch (e) {
       console.log(e);
     } finally {

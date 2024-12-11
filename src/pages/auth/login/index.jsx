@@ -5,16 +5,21 @@ import { auth } from "../../../service/index";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ROUTE_CONSTANTS } from "../../../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setIsAuth } from "../../../state-management/slices/userProfile";
 
 const Login = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleLogin = async (values) => {
     setLoading(true);
     try {
       const { email, password } = values;
       await signInWithEmailAndPassword(auth, email, password);
+      dispatch(setIsAuth(true));
       navigate(ROUTE_CONSTANTS.CABINET);
     } catch (error) {
       notification.error({
