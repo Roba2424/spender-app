@@ -11,10 +11,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MainLayout from "./components/layout/main";
-import Cabinet from "./pages/auth/cabinet";
+import Cabinet from "./pages/cabinet";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfileInfo } from "./state-management/slices/userProfile";
 import { useEffect } from "react";
+import ExpensesPage from "./pages/expenses";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function App() {
                 }
               />
               <Route path={ROUTE_CONSTANTS.CABINET} element={<Cabinet />} />
+              <Route path="/expenses/:category" element={<ExpensesPage />} />
             </Route>
           )
         )}

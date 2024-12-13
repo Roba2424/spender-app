@@ -2,7 +2,7 @@ import { Avatar, Dropdown, Flex, theme, Typography } from "antd";
 import { signOut } from "firebase/auth";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ROUTE_CONSTANTS } from "../../../utils/constants";
 import { auth } from "../../../service/index";
 import { setIsAuth } from "../../../state-management/slices/userProfile";
@@ -20,6 +20,9 @@ const AuthProfileDropDown = ({ userProfileInfo }) => {
   const { token } = useToken();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { totalIncome, totalExpense, balance } = useSelector(
+    (state) => state.expenses.balanceSheet
+  );
 
   const handleSignOut = async () => {
     try {
@@ -67,6 +70,10 @@ const AuthProfileDropDown = ({ userProfileInfo }) => {
                 {userProfileInfo.firstName} {userProfileInfo.lastName}
               </Text>
               <Text>{userProfileInfo.email}</Text>
+
+              <Text strong level={3}>Balance {balance}$</Text>
+              <Text>Total income {totalIncome}$</Text>
+              <Text>Total expense {totalExpense}$</Text>
             </Flex>
             {menu}
           </div>

@@ -1,10 +1,11 @@
-import { Button, Flex } from "antd";
+import { Button, Flex, Typography } from "antd";
 import { ROUTE_CONSTANTS } from "../../../utils/constants";
 import { Link } from "react-router-dom";
 import "./style.css";
 import { useSelector } from "react-redux";
 import AuthProfileDropDown from "../../shared/AuthProfileDropDown";
 
+const { Title } = Typography;
 const Header = () => {
   const {
     authUserInfo: { isAuth, userData },
@@ -13,7 +14,9 @@ const Header = () => {
   return (
     <div className="main-header">
       <Flex justify="space-between" align="center">
-        <p>Spender App</p>
+        <Title level={4} style={{ color: "#ffffff" }}>
+          Spender App
+        </Title>
 
         <div>
           {isAuth ? (
