@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import {
+  fetchExpensesFromFirebase,
+  fetchBalanceFromFirebase,
+  fetchIncomesFromFirebase,
+} from "../../state-management/slices/expenses";
 import AddExpenseModal from "../../components/shared/AddExpenseModal";
 import AddIncomeModal from "../../components/shared/AddIncomeModal";
 import CategoryCard from "../../components/shared/CategoryCard";
@@ -10,15 +15,19 @@ const Cabinet = () => {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const categories = useSelector((state) => state.expenses.categories);
+  const { categories } = useSelector((state) => state.expenses);
+  const { authUserInfo } = useSelector((state) => state.userProfile);
 
-  const calculateTotalExpense = (categoryExpenses) => {
-    return categoryExpenses.reduce(
-      (total, expense) => total + expense.amount,
-      0
-    );
-  };
+  useEffect(() => {
+    if (authUserInfo.isAuth) {
+      const uid = authUserInfo.userData.uid;
+      dispatch(fetchExpensesFromFirebase(uid));
+      dispatch(fetchBalanceFromFirebase(uid));
+      dispatch(fetchIncomesFromFirebase(uid));
+    }
+  }, [authUserInfo, dispatch]);
 
   const handleViewExpenses = (category) => {
     navigate(`/expenses/${category}`);
@@ -31,10 +40,10 @@ const Cabinet = () => {
 
   return (
     <div className="cabinet-container">
-      <div className="header-buttons">
+      <div className="balance-section">
         <button
-          className="add-income-button"
           onClick={() => setIsIncomeModalOpen(true)}
+          className="add-income-button"
         >
           Add Income
         </button>
@@ -45,7 +54,10 @@ const Cabinet = () => {
           <div key={category} className="category-item">
             <CategoryCard
               category={category}
-              total={calculateTotalExpense(categories[category])}
+              total={categories[category].reduce(
+                (acc, expense) => acc + expense.amount,
+                0
+              )}
             />
             <div className="buttons-container">
               <button
