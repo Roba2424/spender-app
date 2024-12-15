@@ -40,7 +40,8 @@ const Cabinet = () => {
 
   return (
     <div className="cabinet-container">
-      <div className="balance-section">
+      <div className="header-section">
+        <h1>Dashboard</h1>
         <button
           onClick={() => setIsIncomeModalOpen(true)}
           className="add-income-button"
