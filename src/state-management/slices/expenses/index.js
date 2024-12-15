@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../../service";
-import { doc, setDoc, updateDoc, getDoc, collection, addDoc, getDocs } from "@firebase/firestore";
+import { doc, setDoc, updateDoc, getDoc, collection, addDoc, getDocs,query,where } from "@firebase/firestore";
 
 const initialState = {
   categories: {
@@ -18,6 +18,26 @@ const initialState = {
   loading: false,
   error: null,
 };
+
+export const fetchExpensesByCategoryFromFirebase = createAsyncThunk(
+  "expenses/fetchExpensesByCategoryFromFirebase",
+  async ({ uid, category }, { rejectWithValue }) => {
+    try {
+      const expensesRef = collection(db, "expenses", uid, "userExpenses");
+      const q = query(expensesRef, where("category", "==", category));
+      const snapshot = await getDocs(q);
+      const expenses = [];
+
+      snapshot.forEach((doc) => {
+        expenses.push({ id: doc.id, ...doc.data() });
+      });
+
+      return { category, expenses };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const addExpenseToFirebase = createAsyncThunk(
   "expenses/addExpenseToFirebase",
@@ -220,7 +240,18 @@ const expensesSlice = createSlice({
       .addCase(fetchBalanceFromFirebase.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      }).addCase(fetchExpensesByCategoryFromFirebase.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchExpensesByCategoryFromFirebase.fulfilled, (state, action) => {
+        const { category, expenses } = action.payload;
+        state.categories[category] = expenses;
+        state.loading = false;
+      })
+      .addCase(fetchExpensesByCategoryFromFirebase.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });;
   },
 });
 

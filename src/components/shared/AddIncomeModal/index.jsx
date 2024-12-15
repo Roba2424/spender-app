@@ -14,6 +14,7 @@ const AddIncomeModal = ({ isModalOpen, setIsModalOpen }) => {
         amount: values.amount,
         createdAt: new Date().toISOString(),
         date: values.date.format("YYYY-MM-DD"),
+        description: values.description || "",
       };
       const uid = authUserInfo.userData.uid;
 

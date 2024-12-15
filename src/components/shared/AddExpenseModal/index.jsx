@@ -13,7 +13,7 @@ const AddExpenseModal = ({ isModalOpen, setIsModalOpen, selectedCategory }) => {
       const expense = {
         amount: values.amount,
         date: values.date.format("YYYY-MM-DD"),
-        description: values.description,
+        description: values.description || "",
       };
       const uid = authUserInfo.userData.uid;
 
