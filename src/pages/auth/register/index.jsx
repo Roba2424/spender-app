@@ -98,7 +98,7 @@ const Register = () => {
         >
           <Input.Password placeholder="Password" />
         </Form.Item>
-        <Flex justify="end" align="center">
+        <Flex justify="end" align="center" className="auth_btn_container">
           <Link to={ROUTE_CONSTANTS.LOGIN}>Sign in</Link>
           <Button type="primary" htmlType="submit" loading={loading}>
             Register

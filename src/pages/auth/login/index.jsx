@@ -57,7 +57,7 @@ const Login = () => {
         >
           <Input.Password placeholder="password" />
         </Form.Item>
-        <Flex justify="end" align="center">
+        <Flex justify="end" align="center" className="auth_btn_container">
           <Link to={ROUTE_CONSTANTS.REGISTER}>Create Account</Link>
           <Button type="primary" htmlType="submit" loading={loading}>
             Sign in
