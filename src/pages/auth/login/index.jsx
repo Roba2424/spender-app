@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { ROUTE_CONSTANTS } from "../../../utils/constants";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setIsAuth } from "../../../state-management/slices/userProfile";
+import { fetchUserProfileInfo, setIsAuth } from "../../../state-management/slices/userProfile";
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -20,6 +20,7 @@ const Login = () => {
       const { email, password } = values;
       await signInWithEmailAndPassword(auth, email, password);
       dispatch(setIsAuth(true));
+      dispatch(fetchUserProfileInfo());
       navigate(ROUTE_CONSTANTS.CABINET);
     } catch (error) {
       notification.error({
