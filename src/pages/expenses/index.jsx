@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Typography, List, Card, Spin } from "antd";
-import { fetchExpensesByCategoryFromFirebase } from "../../state-management/slices/expenses";
+import { fetchBalanceFromFirebase, fetchExpensesByCategoryFromFirebase } from "../../state-management/slices/expenses";
 import "./style.css";
 
 const { Title } = Typography;
@@ -18,6 +18,7 @@ const ExpensesPage = () => {
     if (authUserInfo.isAuth && category) {
       const uid = authUserInfo.userData.uid;
       dispatch(fetchExpensesByCategoryFromFirebase({ uid, category }));
+      dispatch(fetchBalanceFromFirebase(uid));
     }
   }, [authUserInfo, category, dispatch]);
 
